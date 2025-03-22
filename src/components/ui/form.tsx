@@ -53,6 +53,12 @@ const useFormField = () => {
       formItemId: `${itemContext.id}-form-item`,
       formDescriptionId: `${itemContext.id}-form-item-description`,
       formMessageId: `${itemContext.id}-form-item-message`,
+      // Add these properties to match the return type when form context exists
+      error: undefined,
+      invalid: false,
+      isDirty: false,
+      isTouched: false,
+      isValidating: false
     }
   }
 
