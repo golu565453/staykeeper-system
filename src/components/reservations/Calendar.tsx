@@ -12,7 +12,8 @@ import {
   PlusIcon, 
   ChevronLeftIcon, 
   ChevronRightIcon, 
-  ListFilterIcon 
+  ListFilterIcon,
+  Search as SearchIcon
 } from 'lucide-react';
 import { format, addDays, isSameDay } from 'date-fns';
 

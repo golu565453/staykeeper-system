@@ -14,7 +14,7 @@ import {
 } from 'recharts';
 import { TransitionWrapper } from '@/components/shared/TransitionWrapper';
 import { cn } from '@/lib/utils';
-import { mockStats } from '@/data/mockData';
+import { mockStats, mockGuests, mockRooms, mockReservations } from '@/data/mockData';
 import { 
   BedDoubleIcon, 
   UsersIcon, 
