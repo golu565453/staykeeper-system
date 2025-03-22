@@ -10,6 +10,7 @@ import Rooms from "./pages/Rooms";
 import Guests from "./pages/Guests";
 import Reservations from "./pages/Reservations";
 import Settings from "./pages/Settings";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Index />} />
             <Route path="/rooms" element={<Rooms />} />

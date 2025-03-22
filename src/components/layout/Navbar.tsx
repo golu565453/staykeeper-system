@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { BellIcon, UserCircleIcon, SearchIcon } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BellIcon, UserCircleIcon, SearchIcon, LogOutIcon, LogInIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
@@ -11,12 +11,31 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
+import { useToast } from '@/hooks/use-toast';
 
 interface NavbarProps {
   onMenuToggle: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onMenuToggle }) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  // Mock authentication state - in a real app, this would come from your auth context
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    // Implement actual logout logic here
+    setIsAuthenticated(false);
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+  };
+
   return (
     <header className="glass z-50 sticky top-0 py-4 px-6 flex items-center justify-between border-b border-border/40">
       <div className="flex items-center gap-4">
@@ -53,34 +72,51 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuToggle }) => {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="relative">
-          <BellIcon size={20} />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full"></span>
-        </Button>
-        
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <UserCircleIcon size={22} />
+        {!isAuthenticated ? (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleLogin}
+            className="flex items-center gap-2"
+          >
+            <LogInIcon size={16} />
+            <span className="hidden sm:inline">Login</span>
+          </Button>
+        ) : (
+          <>
+            <Button variant="ghost" size="icon" className="relative">
+              <BellIcon size={20} />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full"></span>
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <div className="flex items-center justify-start gap-2 p-2">
-              <div className="rounded-full w-8 h-8 bg-primary flex items-center justify-center text-primary-foreground">
-                A
-              </div>
-              <div className="flex flex-col space-y-0.5">
-                <p className="text-sm font-medium leading-none">Admin User</p>
-                <p className="text-xs leading-none text-muted-foreground">admin@hotel.com</p>
-              </div>
-            </div>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <UserCircleIcon size={22} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="rounded-full w-8 h-8 bg-primary flex items-center justify-center text-primary-foreground">
+                    A
+                  </div>
+                  <div className="flex flex-col space-y-0.5">
+                    <p className="text-sm font-medium leading-none">Admin User</p>
+                    <p className="text-xs leading-none text-muted-foreground">admin@hotel.com</p>
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-destructive flex items-center gap-2">
+                  <LogOutIcon size={16} />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        )}
       </div>
     </header>
   );
